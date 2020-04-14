@@ -19,23 +19,65 @@ public class InsectWikiCrawler {
     List<String> list = new ArrayList<>();
 
     for(Element tr : tableTr){
-      String json = "";
-      json += "{\n";
-      json +=   "\t\t\"name\" : \""+tr.select("div.wiki-paragraph").get(0).select("a.wiki-link-internal").text()+"\",\n";
-      json +=   "\t\t\"img_url\" : \"https:"+tr.select("div.wiki-paragraph > a.wiki-link-internal > span.wiki-image-align-normal > span.wiki-image-wrapper > img.wiki-image.wiki-image-loading").attr("data-src")+"\",\n";
-      json +=   "\t\t\"category\" : \"곤충\",\n";
-      json +=   "\t\t\"appearance_period\" : \""+tr.select("div.wiki-paragraph").get(2).text()+"\",\n";
-      json +=   "\t\t\"appearance_time\" : \""+tr.select("div.wiki-paragraph").get(3).text()+"\",\n";
-      json +=   "\t\t\"appearance_place\" : \""+tr.select("div.wiki-paragraph").get(4).text()+"\",\n";
-      json +=   "\t\t\"sale_price\" : \""+tr.select("div.wiki-paragraph").get(5).text()+"\",\n";
-      json +=   "\t\t\"appearance_first\" : \""+tr.select("div.wiki-paragraph").get(6).text()+"\",\n";
-      json +=   "\t\t\"isExcept\" : \""+false+"\"\n";
-      json += "}";
+      String json = crawlElement(tr);
       list.add(json);
     }
 
     printList(list);
 
+  }
+
+  private String crawlElement(Element tr) {
+    String json = "";
+    json += "{\n";
+    json +=   "\t\t\"name\" : \""+getKorName(tr)+"\",\n";
+    json +=   "\t\t\"img_url\" : \"https:"+ crawlImgUrl(tr) +"\",\n";
+    json +=   "\t\t\"category\" : \"" + crawlCategory() + "\",\n";
+    json +=   "\t\t\"appearance_period\" : \""+ crawlAppearancePeriod(tr) +"\",\n";
+    json +=   "\t\t\"appearance_time\" : \""+ crawlAppearanceTime(tr) +"\",\n";
+    json +=   "\t\t\"appearance_place\" : \""+ crawlAppearancePrice(tr) +"\",\n";
+    json +=   "\t\t\"sale_price\" : \""+ crawlSalePrice(tr) +"\",\n";
+    json +=   "\t\t\"appearance_first\" : \""+ crawlAppearanceFirst(tr) +"\",\n";
+    json +=   "\t\t\"isExcept\" : "+ crawlIsExcept() +"\n";
+    json += "}";
+    return json;
+  }
+
+  private boolean crawlIsExcept() {
+    return false;
+  }
+
+  private String crawlAppearanceFirst(Element tr) {
+    return tr.select("div.wiki-paragraph").get(6).text();
+  }
+
+  private String crawlSalePrice(Element tr) {
+    return tr.select("div.wiki-paragraph").get(5).text();
+  }
+
+  private String crawlAppearancePrice(Element tr) {
+    return tr.select("div.wiki-paragraph").get(4).text();
+  }
+
+  private String crawlAppearanceTime(Element tr) {
+    return tr.select("div.wiki-paragraph").get(3).text();
+  }
+
+  private String crawlAppearancePeriod(Element tr) {
+    return tr.select("div.wiki-paragraph").get(2).text();
+  }
+
+  private String crawlCategory() {
+    return "곤충";
+  }
+
+  private String crawlImgUrl(Element tr) {
+    return tr.select("div.wiki-paragraph > a.wiki-link-internal > span.wiki-image-align-normal > span.wiki-image-wrapper > img.wiki-image.wiki-image-loading").attr("data-src");
+  }
+
+  private String getKorName(Element tr) {
+    String[] fullName = tr.select("div.wiki-paragraph").get(0).text().split(" ");
+    return fullName[0];
   }
 
   private void printList(List<String> list) {
