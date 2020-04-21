@@ -2,7 +2,7 @@ package com.wonjun.animalforest.animalforest;
 
 import com.wonjun.animalforest.animalforest.scheduler.crawler.wiki.FishWikiCrawler;
 import com.wonjun.animalforest.animalforest.scheduler.crawler.wiki.InsectWikiCrawler;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 class AnimalforestApplicationTest {
 

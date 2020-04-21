@@ -1,9 +1,9 @@
 package com.wonjun.animalforest.animalforest.domain.wiki;
 
 import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringRunner.class)
 public class WikiTest {
 
   public static final Wiki newWiki = Wiki.builder()
@@ -20,4 +20,5 @@ public class WikiTest {
       .isExcept(false)
       .size(null)
       .build();
+
 }
