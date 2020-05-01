@@ -10,7 +10,6 @@ import org.jsoup.select.Elements;
 public class FishWikiCrawler {
 
   private static final String VIEW_URL_FORMAT_FISH_WIKI = "https://namu.wiki/w/%EB%8F%99%EB%AC%BC%EC%9D%98%20%EC%88%B2%20%EC%8B%9C%EB%A6%AC%EC%A6%88/%EB%AC%BC%EA%B3%A0%EA%B8%B0";
-
   private static final String WIKI_HEADING_CONTENT_TABLE_TR = "div.w > div.wiki-heading-content > div.wiki-table-wrap > table.wiki-table > tbody > tr";
 
   public void crawl() {
@@ -20,15 +19,20 @@ public class FishWikiCrawler {
     List<String> list = new ArrayList<>();
 
     for(Element tr : tableTr){
-      String json = crawlElement(tr);
+      String json = crawlBox(tr);
       list.add(json);
     }
 
+    for(int i = 0; i < list.size(); i++){
+      if(list.get(i).contains("\"name\" : \"이름\"")){
+        list.remove(i);
+      }
+    }
     printList(list);
 
   }
 
-  private String crawlElement(Element tr) {
+  private String crawlBox(Element tr) {
     String json = "";
     json += "{\n";
     json +=   "\t\t\"name\" : \"" + crawlKorName(tr) + "\",\n";
@@ -83,6 +87,7 @@ public class FishWikiCrawler {
 
   private String crawlKorName(Element tr) {
     String[] fullName = tr.select("div.wiki-paragraph").get(0).text().split(" ");
+    fullName[0].split("\\[");
     return fullName[0];
   }
 

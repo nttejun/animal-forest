@@ -3,9 +3,11 @@ package com.wonjun.animalforest.animalforest.service;
 import static java.util.stream.Collectors.toList;
 
 import com.wonjun.animalforest.animalforest.domain.wiki.Wiki;
+import com.wonjun.animalforest.animalforest.exception.ResourceNotFoundException;
 import com.wonjun.animalforest.animalforest.repository.WikiRepository;
 import com.wonjun.animalforest.animalforest.service.dto.WikiDto;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class WikiService {
 
-  private WikiRepository wikiRepository;
+  private final WikiRepository wikiRepository;
 
   @Transactional
   public List<Wiki> saveAll(List<Wiki> wikis){
@@ -33,9 +35,9 @@ public class WikiService {
         .orElseGet(() -> wikiRepository.save(wiki));
   }
 
-  private List<WikiDto.Response> toResponse(List<Wiki> wikis){
-    return wikis.stream()
-        .map(WikiDto.Response::of)
-        .collect(toList());
+  public WikiDto.Response findByWikiId(String wikiId){
+    Wiki wiki = wikiRepository.findByWikiId(wikiId)
+        .orElseThrow(ResourceNotFoundException::new);
+    return WikiDto.Response.of(wiki);
   }
 }

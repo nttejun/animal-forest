@@ -1,6 +1,5 @@
 package com.wonjun.animalforest.animalforest;
 
-import com.wonjun.animalforest.animalforest.utils.HtmlParser;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

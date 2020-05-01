@@ -19,7 +19,7 @@ public class InsectWikiCrawler {
     List<String> list = new ArrayList<>();
 
     for(Element tr : tableTr){
-      String json = crawlElement(tr);
+      String json = crawlBox(tr);
       list.add(json);
     }
 
@@ -27,7 +27,7 @@ public class InsectWikiCrawler {
 
   }
 
-  private String crawlElement(Element tr) {
+  private String crawlBox(Element tr) {
     String json = "";
     json += "{\n";
     json +=   "\t\t\"name\" : \""+getKorName(tr)+"\",\n";
